@@ -44,6 +44,7 @@
 
             <!-- Top Controls -->
             <div class="flex items-center gap-3">
+                <!-- Current Active Account Badge -->
                 <div id="sellerUserBadge" class="hidden text-xs bg-slate-800 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-2">
                     <i class="fa-solid fa-store"></i>
                     <span id="currentSellerNameText">فرۆشیار</span>
@@ -91,7 +92,7 @@
 
                         <form onsubmit="handleSellerLogin(event)" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">ژمارەی مۆبایل</label>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">ژمارەی مۆبایل / ناو</label>
                                 <input type="text" id="sellerLoginPhone" required placeholder="0750XXXXXXX" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 transition">
                             </div>
 
@@ -243,7 +244,7 @@
             </form>
         </section>
 
-        <!-- 3. ADMIN DASHBOARD (WITH SELLER BLOCKING MANAGEMENT) -->
+        <!-- 3. ADMIN DASHBOARD (WITH BLOG MANAGEMENT) -->
         <section id="adminDashboardView" class="space-y-6 hidden">
             
             <!-- ADMIN TABS NAVIGATION -->
@@ -252,9 +253,9 @@
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>داشبۆرد و بەراوردکاری نرخ</span>
                 </button>
-                <button id="adminTabSellersBtn" onclick="switchAdminTab('sellers')" class="px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200">
-                    <i class="fa-solid fa-store-slash text-red-600"></i>
-                    <span>لیستی فرۆشگاکان و بلۆککردن (Block Sellers)</span>
+                <button id="adminTabBlogsBtn" onclick="switchAdminTab('blogs')" class="px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200">
+                    <i class="fa-solid fa-blog"></i>
+                    <span>بەڕێوەبردنی بلاگەکان (Blog List)</span>
                 </button>
             </div>
 
@@ -264,7 +265,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-chart-pie text-amber-600"></i>
-                            <span>داشبۆردی بەڕێوەبەری بەراوردکاری نرخەکان</span>
+                            <span>داشبۆردی بەڕێوەبەرایەتی بەراوردکاری نرخەکان</span>
                         </h2>
                         <p class="text-xs text-slate-500 mt-1">شیکاری بەراوردکاری بۆ کەمتری و زۆرترین نرخ</p>
                     </div>
@@ -294,7 +295,7 @@
 
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">کۆی کاڵا چالاکەکان</span>
+                            <span class="text-xs font-bold text-slate-500 block mb-1">کۆی کاڵاکان</span>
                             <span id="statTotalItems" class="text-2xl font-black text-slate-900">0</span>
                         </div>
                         <i class="fa-solid fa-boxes-stacked text-2xl text-blue-600"></i>
@@ -317,7 +318,7 @@
                     <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
                         <h3 class="text-sm font-bold flex items-center gap-2">
                             <i class="fa-solid fa-list-check text-amber-400"></i>
-                            <span>لیستی گشتی بەراوردکاری کاڵاکان</span>
+                            <span>لیستی گشتی بەراوردکاری کاڵا و فرۆشگاکان</span>
                         </h3>
                         <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="tableCountBadge">0 کاڵا</span>
                     </div>
@@ -342,29 +343,68 @@
                 </div>
             </div>
 
-            <!-- TAB 2: SELLER BLOCKING MANAGEMENT SECTION -->
-            <div id="adminSellersSection" class="space-y-6 hidden">
+            <!-- TAB 2: BLOG MANAGEMENT SECTION -->
+            <div id="adminBlogsSection" class="space-y-6 hidden">
+                <!-- Blog Create Form -->
+                <div class="bg-white rounded-2xl p-6 custom-shadow border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2 border-b pb-3">
+                        <i class="fa-solid fa-pen-to-square text-amber-600"></i>
+                        <span>زیادکردنی بابەت / بلاگی نوێ</span>
+                    </h3>
+                    <form onsubmit="handleCreateBlog(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">سەردێڕی بلاگ <span class="text-red-500">*</span></label>
+                                <input type="text" id="blogTitleInput" required placeholder="سەردێڕی بابەتەکە..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-900">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">نووسەر / بڵاوکەرەوە</label>
+                                <input type="text" id="blogAuthorInput" placeholder="دەستەی بەڕێوەبەری" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-900">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">وێنەی بەرگ (Image URL / فایل)</label>
+                            <input type="text" id="blogImageInput" placeholder="https://example.com/image.jpg" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-900" dir="ltr">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">ناوەڕۆکی بلاگ <span class="text-red-500">*</span></label>
+                            <textarea id="blogContentInput" rows="4" required placeholder="ناوەڕۆک و زانیاری بابەتەکە لێرە بنووسە..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-900"></textarea>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>بڵاوکردنەوەی بلاگ</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Blog List Table -->
                 <div class="bg-white rounded-2xl border border-slate-200 custom-shadow overflow-hidden">
                     <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
                         <h3 class="text-sm font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-users-slash text-red-400"></i>
-                            <span>لیستی فرۆشگا تۆمارکراوەکان و ڕێگەپێدان (Block / Unblock)</span>
+                            <i class="fa-solid fa-newspaper text-amber-400"></i>
+                            <span>لیستی بەڕێوەبردنی بلاگەکانی سیستەم</span>
                         </h3>
-                        <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="sellerCountBadge">0 فرۆشگا</span>
+                        <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="blogCountBadge">0 بلاگ</span>
                     </div>
 
                     <div class="overflow-x-auto">
                         <table class="w-full text-right text-sm">
                             <thead class="bg-slate-100 text-slate-700 text-xs border-b border-slate-200">
                                 <tr>
-                                    <th class="p-3.5">ناوی دوکان / کۆمپانیا</th>
-                                    <th class="p-3.5">ژمارەی مۆبایل</th>
-                                    <th class="p-3.5">شار / شوێن</th>
-                                    <th class="p-3.5">دۆخی هەژمار</th>
-                                    <th class="p-3.5 text-center">کرداری بلۆککردن</th>
+                                    <th class="p-3.5">وێنە</th>
+                                    <th class="p-3.5">سەردێڕی بابەت</th>
+                                    <th class="p-3.5">نووسەر</th>
+                                    <th class="p-3.5">بەرواری بڵاوکردنەوە</th>
+                                    <th class="p-3.5 text-center">کردار</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminSellersTable" class="divide-y divide-slate-100"></tbody>
+                            <tbody id="adminBlogsTable" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -394,7 +434,7 @@
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-xs gap-2">
             <div class="flex items-center gap-2">
                 <img src="logo.jpg" class="h-6 w-auto rounded opacity-80" alt="Footer Logo">
-                <span>سیستەمی ناوەندی بەراوردکاری نرخ - بەڕێوەبەرایەتی سەرەکی</span>
+                <span>سیستەمی ناوەندی بەراوردکاری نرخ - ڕێنمایی و بەڕێوەبەرایەتی گشتی</span>
             </div>
             <p>© 2026</p>
         </div>
@@ -409,6 +449,7 @@
 
         let tempSellerItems = [];
         let masterProducts = JSON.parse(localStorage.getItem('official_master_products')) || [];
+        let officialBlogs = JSON.parse(localStorage.getItem('official_blogs')) || [];
 
         // Auth Form Switcher (Login vs Sign Up)
         function toggleAuthForm(mode) {
@@ -431,13 +472,7 @@
             const location = document.getElementById('signUpLocation').value;
             const pass = document.getElementById('signUpPass').value.trim();
 
-            const existing = registeredSellers.find(s => s.phone === phone);
-            if (existing) {
-                alert('ئەم ژمارەی مۆبایلە پێشتر تۆمارکراوە!');
-                return;
-            }
-
-            const newSeller = { storeName, phone, location, pass, isBlocked: false };
+            const newSeller = { storeName, phone, location, pass };
             registeredSellers.push(newSeller);
             localStorage.setItem('registered_sellers', JSON.stringify(registeredSellers));
 
@@ -447,7 +482,7 @@
             updateAppUI();
         }
 
-        // Seller Login with Block Check
+        // Seller Login
         function handleSellerLogin(e) {
             e.preventDefault();
             const phone = document.getElementById('sellerLoginPhone').value.trim();
@@ -456,15 +491,11 @@
             const foundSeller = registeredSellers.find(s => s.phone === phone && s.pass === pass);
 
             if (foundSeller) {
-                if (foundSeller.isBlocked) {
-                    alert('⛔ دەستگەیشتنت ڕاگیراوە! هەژمارەکەت لەلایەن بەڕێوەبەرەوە بلۆک کراوە.');
-                    return;
-                }
                 currentSellerSession = foundSeller;
                 localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
                 updateAppUI();
             } else {
-                alert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە!');
+                alert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە! ئەگەر هەژمارت نییە Sign Up بکە.');
             }
         }
 
@@ -491,7 +522,7 @@
                 logoutBtn.classList.remove('hidden');
                 userBadge.classList.add('hidden');
                 renderAdminDashboard();
-                renderAdminSellers();
+                renderAdminBlogs();
             } else if (currentSellerSession) {
                 authSection.classList.add('hidden');
                 sellerPortal.classList.remove('hidden');
@@ -611,27 +642,21 @@
             alert('کاڵاکان بە سەرکەوتوویی تۆمارکران!');
         }
 
-        // Render Admin Product Dashboard (Filter Blocked Sellers Out)
+        // Render Admin Product Dashboard & Stats
         function renderAdminDashboard() {
             const searchVal = (document.getElementById('adminSearchInput').value || '').toLowerCase();
             const catVal = document.getElementById('adminCategoryFilter').value;
 
-            // Extract phones of blocked sellers
-            const blockedPhones = registeredSellers.filter(s => s.isBlocked).map(s => s.phone);
-
-            // Hide products of blocked sellers
-            let activeProducts = masterProducts.filter(p => !blockedPhones.includes(p.storePhone));
-
-            let filtered = activeProducts.filter(p => {
+            let filtered = masterProducts.filter(p => {
                 const matchSearch = p.productName.toLowerCase().includes(searchVal) || p.storeName.toLowerCase().includes(searchVal);
                 const matchCat = (catVal === 'هەمووی' || p.productCategory === catVal);
                 return matchSearch && matchCat;
             });
 
             // Update Stats
-            const uniqueStores = [...new Set(activeProducts.map(p => p.storeName))];
+            const uniqueStores = [...new Set(masterProducts.map(p => p.storeName))];
             document.getElementById('statTotalStores').innerText = uniqueStores.length;
-            document.getElementById('statTotalItems').innerText = activeProducts.length;
+            document.getElementById('statTotalItems').innerText = masterProducts.length;
 
             if (filtered.length > 0) {
                 const minItem = filtered.reduce((min, p) => p.productPrice < min.productPrice ? p : min, filtered[0]);
@@ -666,7 +691,7 @@
                     <td class="p-3.5 text-xs text-slate-600" dir="ltr">${item.storePhone}</td>
                     <td class="p-3.5 font-bold text-emerald-700">$${item.productPrice.toFixed(2)}</td>
                     <td class="p-3.5 text-center">
-                        <button onclick="deleteProduct(${item.id})" class="text-red-600 hover:text-red-800 p-1.5" title="سڕینەوە"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="deleteProduct(${item.id})" class="text-red-600 hover:text-red-800 p-1.5"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -681,70 +706,82 @@
         // --- ADMIN DASHBOARD TAB SWITCHING ---
         function switchAdminTab(tab) {
             const prodSec = document.getElementById('adminProductsSection');
-            const sellerSec = document.getElementById('adminSellersSection');
+            const blogSec = document.getElementById('adminBlogsSection');
             const prodBtn = document.getElementById('adminTabProductsBtn');
-            const sellerBtn = document.getElementById('adminTabSellersBtn');
+            const blogBtn = document.getElementById('adminTabBlogsBtn');
 
-            if (tab === 'sellers') {
+            if (tab === 'blogs') {
                 prodSec.classList.add('hidden');
-                sellerSec.classList.remove('hidden');
+                blogSec.classList.remove('hidden');
 
-                sellerBtn.className = "px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow";
+                blogBtn.className = "px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow";
                 prodBtn.className = "px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200";
-                
-                renderAdminSellers();
             } else {
-                sellerSec.classList.add('hidden');
+                blogSec.classList.add('hidden');
                 prodSec.classList.remove('hidden');
 
                 prodBtn.className = "px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow";
-                sellerBtn.className = "px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200";
-                
-                renderAdminDashboard();
+                blogBtn.className = "px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200";
             }
         }
 
-        // --- BLOCK / UNBLOCK SELLER MANAGEMENT ---
-        function renderAdminSellers() {
-            const tbody = document.getElementById('adminSellersTable');
-            document.getElementById('sellerCountBadge').innerText = `${registeredSellers.length} فرۆشگا`;
+        // --- BLOG MANAGEMENT FUNCTIONS ---
+        function handleCreateBlog(e) {
+            e.preventDefault();
+            const title = document.getElementById('blogTitleInput').value.trim();
+            const author = document.getElementById('blogAuthorInput').value.trim() || 'بەڕێوەبەری سیستەم';
+            const imageUrl = document.getElementById('blogImageInput').value.trim() || 'https://via.placeholder.com/600x300/1e293b/ffffff?text=Blog+Post';
+            const content = document.getElementById('blogContentInput').value.trim();
 
-            if (registeredSellers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 font-medium">هیچ فرۆشگایەک تۆمار نەکراوە.</td></tr>`;
+            const newBlog = {
+                id: Date.now(),
+                title,
+                author,
+                imageUrl,
+                content,
+                createdAt: new Date().toLocaleDateString('ckb-IQ', { year: 'numeric', month: 'short', day: 'numeric' })
+            };
+
+            officialBlogs.unshift(newBlog);
+            localStorage.setItem('official_blogs', JSON.stringify(officialBlogs));
+
+            // Reset Form
+            document.getElementById('blogTitleInput').value = '';
+            document.getElementById('blogAuthorInput').value = '';
+            document.getElementById('blogImageInput').value = '';
+            document.getElementById('blogContentInput').value = '';
+
+            renderAdminBlogs();
+            alert('بلاگەکە بە سەرکەوتوویی بڵاوکرایەوە!');
+        }
+
+        function renderAdminBlogs() {
+            const tbody = document.getElementById('adminBlogsTable');
+            document.getElementById('blogCountBadge').innerText = `${officialBlogs.length} بلاگ`;
+
+            if (officialBlogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 font-medium">هیچ بلاگێک تۆمار نەکراوە.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = registeredSellers.map(seller => `
+            tbody.innerHTML = officialBlogs.map((blog, index) => `
                 <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                    <td class="p-3.5 font-bold text-slate-800">${seller.storeName}</td>
-                    <td class="p-3.5 text-xs text-slate-600" dir="ltr">${seller.phone}</td>
-                    <td class="p-3.5 text-xs text-slate-600">${seller.location}</td>
-                    <td class="p-3.5">
-                        ${seller.isBlocked 
-                            ? `<span class="px-2.5 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full flex items-center gap-1 w-max"><i class="fa-solid fa-ban"></i> بلۆکراوە (Blocked)</span>`
-                            : `<span class="px-2.5 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full flex items-center gap-1 w-max"><i class="fa-solid fa-circle-check"></i> چالاکە (Active)</span>`
-                        }
-                    </td>
+                    <td class="p-3.5"><img src="${blog.imageUrl}" class="w-12 h-10 object-cover rounded-lg border"></td>
+                    <td class="p-3.5 font-bold text-slate-800">${blog.title}</td>
+                    <td class="p-3.5 text-xs text-slate-600">${blog.author}</td>
+                    <td class="p-3.5 text-xs text-slate-500">${blog.createdAt}</td>
                     <td class="p-3.5 text-center">
-                        <button onclick="toggleBlockSeller('${seller.phone}')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition ${
-                            seller.isBlocked 
-                                ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                                : 'bg-red-600 hover:bg-red-700 text-white'
-                        }">
-                            ${seller.isBlocked ? '<i class="fa-solid fa-unlock ml-1"></i> لابردنی بلۆک' : '<i class="fa-solid fa-user-lock ml-1"></i> بلۆککردن (Block)'}
-                        </button>
+                        <button onclick="deleteBlog(${blog.id})" class="text-red-600 hover:text-red-800 p-1.5"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function toggleBlockSeller(phone) {
-            const seller = registeredSellers.find(s => s.phone === phone);
-            if (seller) {
-                seller.isBlocked = !seller.isBlocked;
-                localStorage.setItem('registered_sellers', JSON.stringify(registeredSellers));
-                renderAdminSellers();
-                renderAdminDashboard(); // Refresh products to hide/show blocked seller's products
+        function deleteBlog(id) {
+            if (confirm('دڵنیایت لە سڕینەوەی ئەم بلاگە؟')) {
+                officialBlogs = officialBlogs.filter(b => b.id !== id);
+                localStorage.setItem('official_blogs', JSON.stringify(officialBlogs));
+                renderAdminBlogs();
             }
         }
 
