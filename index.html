@@ -403,13 +403,54 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Data Store Logic
-        let registeredSellers = JSON.parse(localStorage.getItem('registered_sellers')) || [];
+        // ====== GOOGLE SHEETS BACKEND CONFIG ======
+        // دوای دامەزراندنی Google Apps Script وەک Web App (Deploy > New deployment > Web app)
+        // لینکی "Web app URL"ـەکە کۆپی بکە و لێرە دایبنێ لەنێوان کۆتەیەکاندا:
+        const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyIYHUc3R9co5KVK5ZNwqpByhOk_2VI14l1nR4rcyU2pzFnTkdkJ-peQft7T02KPr7tbg/exec';
+
+        // Data Store Logic (all shared data now lives in Google Sheets; only the
+        // "who is logged in on THIS device" session stays in localStorage)
+        let registeredSellers = [];
         let currentSellerSession = JSON.parse(localStorage.getItem('current_seller_session')) || null;
         let isAdminLoggedIn = false;
 
         let tempSellerItems = [];
-        let masterProducts = JSON.parse(localStorage.getItem('official_master_products')) || [];
+        let masterProducts = [];
+        let dataLoaded = false;
+
+        // ---- API HELPERS ----
+        // GET requests are used for reading (no CORS preflight issues).
+        async function apiGetAll() {
+            const res = await fetch(WEBAPP_URL, { method: 'GET' });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'server_error');
+            registeredSellers = (data.sellers || []).map(s => ({
+                ...s,
+                isBlocked: s.isBlocked === true || s.isBlocked === 'TRUE' || s.isBlocked === 'true'
+            }));
+            masterProducts = data.products || [];
+            dataLoaded = true;
+        }
+
+        // POST requests are sent with a text/plain content-type on purpose:
+        // this keeps the request a "simple request" so the browser does not
+        // send a CORS pre-flight (OPTIONS) request, which Apps Script Web Apps
+        // do not handle by default.
+        async function apiPost(action, payload) {
+            const res = await fetch(WEBAPP_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action, payload })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'server_error');
+            return data;
+        }
+
+        function showLoadError(err) {
+            console.error(err);
+            alert('کێشەیەک ڕوویدا لە پەیوەندیکردن لەگەڵ Google Sheets. تکایە دڵنیابەرەوە کە WEBAPP_URL بە دروستی دانراوە و بەرنامەکە بە "Anyone" دەستپێگەیشتنی هەیە.');
+        }
 
         // Auth Form Switcher (Login vs Sign Up)
         function toggleAuthForm(mode) {
@@ -425,47 +466,67 @@
         }
 
         // Seller Sign Up
-        function handleSellerSignUp(e) {
+        async function handleSellerSignUp(e) {
             e.preventDefault();
             const storeName = document.getElementById('signUpStoreName').value.trim();
             const phone = document.getElementById('signUpPhone').value.trim();
             const location = document.getElementById('signUpLocation').value;
             const pass = document.getElementById('signUpPass').value.trim();
 
-            const existing = registeredSellers.find(s => s.phone === phone);
-            if (existing) {
-                alert('ئەم ژمارەی مۆبایلە پێشتر تۆمارکراوە!');
-                return;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+
+            try {
+                await apiGetAll(); // refresh so we check against the latest phone list
+                const existing = registeredSellers.find(s => String(s.phone) === phone);
+                if (existing) {
+                    alert('ئەم ژمارەی مۆبایلە پێشتر تۆمارکراوە!');
+                    return;
+                }
+
+                const newSeller = { storeName, phone, location, pass, isBlocked: false };
+                await apiPost('addSeller', newSeller);
+
+                currentSellerSession = newSeller;
+                localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
+
+                await apiGetAll();
+                updateAppUI();
+            } catch (err) {
+                showLoadError(err);
+            } finally {
+                submitBtn.disabled = false;
             }
-
-            const newSeller = { storeName, phone, location, pass, isBlocked: false };
-            registeredSellers.push(newSeller);
-            localStorage.setItem('registered_sellers', JSON.stringify(registeredSellers));
-
-            currentSellerSession = newSeller;
-            localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
-
-            updateAppUI();
         }
 
         // Seller Login
-        function handleSellerLogin(e) {
+        async function handleSellerLogin(e) {
             e.preventDefault();
             const phone = document.getElementById('sellerLoginPhone').value.trim();
             const pass = document.getElementById('sellerLoginPass').value.trim();
 
-            const foundSeller = registeredSellers.find(s => s.phone === phone && s.pass === pass);
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
 
-            if (foundSeller) {
-                if (foundSeller.isBlocked) {
-                    alert('⛔ دەستگەیشتنت ڕاگیراوە! هەژمارەکەت لەلایەن بەڕێوەبەرەوە بلۆک کراوە.');
-                    return;
+            try {
+                await apiGetAll(); // always check against the latest data from the sheet
+                const foundSeller = registeredSellers.find(s => String(s.phone) === phone && String(s.pass) === pass);
+
+                if (foundSeller) {
+                    if (foundSeller.isBlocked) {
+                        alert('⛔ دەستگەیشتنت ڕاگیراوە! هەژمارەکەت لەلایەن بەڕێوەبەرەوە بلۆک کراوە.');
+                        return;
+                    }
+                    currentSellerSession = foundSeller;
+                    localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
+                    updateAppUI();
+                } else {
+                    alert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە!');
                 }
-                currentSellerSession = foundSeller;
-                localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
-                updateAppUI();
-            } else {
-                alert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە!');
+            } catch (err) {
+                showLoadError(err);
+            } finally {
+                submitBtn.disabled = false;
             }
         }
 
@@ -515,15 +576,20 @@
         function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
         function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
 
-        function handleAdminLogin(e) {
+        async function handleAdminLogin(e) {
             e.preventDefault();
             const u = document.getElementById('adminUser').value.trim();
             const p = document.getElementById('adminPass').value.trim();
 
             if (u === 'admin' && p === 'admin123') {
-                isAdminLoggedIn = true;
-                closeAdminModal();
-                updateAppUI();
+                try {
+                    await apiGetAll();
+                    isAdminLoggedIn = true;
+                    closeAdminModal();
+                    updateAppUI();
+                } catch (err) {
+                    showLoadError(err);
+                }
             } else {
                 alert('ناوی بەکارهێنەر یان وشەی تێپەڕی بەڕێوەبەر هەڵەیە!');
             }
@@ -607,7 +673,7 @@
         }
 
         // Final Form Submission
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
 
             if (tempSellerItems.length === 0) {
@@ -620,19 +686,34 @@
                 return;
             }
 
+            // Google Sheets cells have a ~50,000 character limit. Large photo
+            // uploads become huge base64 strings, so we fall back to a
+            // placeholder image if a photo is too large for a cell.
+            const MAX_CELL_CHARS = 45000;
             const formattedItems = tempSellerItems.map(item => ({
                 ...item,
+                imageUrl: (item.imageUrl && item.imageUrl.length > MAX_CELL_CHARS)
+                    ? 'https://via.placeholder.com/80/1e293b/f59e0b?text=No+Image'
+                    : item.imageUrl,
                 sellerStore: currentSellerSession.storeName || 'دیارینەکراو',
                 sellerPhone: currentSellerSession.phone || '--',
                 sellerLocation: currentSellerSession.location || '--'
             }));
 
-            masterProducts = [...masterProducts, ...formattedItems];
-            localStorage.setItem('official_master_products', JSON.stringify(masterProducts));
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
 
-            tempSellerItems = [];
-            renderTempItemsTable();
-            alert('✅ سەرکەوتووانە هەموو کاڵاکان تۆمارکران و ڕەوانەی سیستەمی بەراوردکاری کەوتن!');
+            try {
+                await apiPost('addProducts', { items: formattedItems });
+
+                tempSellerItems = [];
+                renderTempItemsTable();
+                alert('✅ سەرکەوتووانە هەموو کاڵاکان تۆمارکران و ڕەوانەی سیستەمی بەراوردکاری کەوتن (Google Sheets)!');
+            } catch (err) {
+                showLoadError(err);
+            } finally {
+                submitBtn.disabled = false;
+            }
         }
 
         // Admin Dashboard Switch
@@ -719,11 +800,14 @@
             `).join('');
         }
 
-        function deleteMasterProduct(id) {
-            if (confirm('دڵنیایت لە سڕینەوەی ئەم کاڵایە؟')) {
-                masterProducts = masterProducts.filter(p => p.id !== id);
-                localStorage.setItem('official_master_products', JSON.stringify(masterProducts));
+        async function deleteMasterProduct(id) {
+            if (!confirm('دڵنیایت لە سڕینەوەی ئەم کاڵایە؟')) return;
+            try {
+                await apiPost('deleteProduct', { id });
+                masterProducts = masterProducts.filter(p => String(p.id) !== String(id));
                 renderAdminDashboard();
+            } catch (err) {
+                showLoadError(err);
             }
         }
 
@@ -757,19 +841,33 @@
             `).join('');
         }
 
-        function toggleBlockSeller(phone) {
-            registeredSellers = registeredSellers.map(s => {
-                if (s.phone === phone) {
-                    return { ...s, isBlocked: !s.isBlocked };
-                }
-                return s;
-            });
-            localStorage.setItem('registered_sellers', JSON.stringify(registeredSellers));
-            renderAdminSellers();
+        async function toggleBlockSeller(phone) {
+            try {
+                await apiPost('toggleBlockSeller', { phone });
+                registeredSellers = registeredSellers.map(s => {
+                    if (String(s.phone) === String(phone)) {
+                        return { ...s, isBlocked: !s.isBlocked };
+                    }
+                    return s;
+                });
+                renderAdminSellers();
+            } catch (err) {
+                showLoadError(err);
+            }
         }
 
         // Run UI Initialization on Load
-        updateAppUI();
+        async function initApp() {
+            try {
+                await apiGetAll();
+            } catch (err) {
+                // If the very first load fails (e.g. WEBAPP_URL not set yet),
+                // still render the auth screen instead of a blank page.
+                console.error(err);
+            }
+            updateAppUI();
+        }
+        initApp();
     </script>
 </body>
 </html>
