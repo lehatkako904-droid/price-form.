@@ -6,8 +6,9 @@
     <title>سیستەمی فەرمی تۆمارکردن و داشبۆردی بەراوردکاری نرخەکان</title>
 
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -19,22 +20,104 @@
     <style>
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: #1a1f27;
+            background-image: url('basic-krg-logo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #1e293b;
         }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        
         .custom-shadow {
-            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.1);
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.15);
+        }
+        .modal-overlay {
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        .stat-card {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+        .stat-card:active {
+            transform: scale(0.97);
+        }
+        .highlight-min {
+            background-color: #d1fae5 !important;
+            border-right: 4px solid #059669 !important;
+        }
+        .highlight-max {
+            background-color: #fef3c7 !important;
+            border-right: 4px solid #d97706 !important;
+        }
+        
+        .bg-white {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .bg-slate-50 {
+            background-color: rgba(248, 250, 252, 0.9);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        .bg-slate-100 {
+            background-color: rgba(241, 245, 249, 0.9);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        
+        header {
+            background-color: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        
+        @media (max-width: 640px) {
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #f59e0b;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-loading {
+            opacity: 0.7;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="text-slate-800 min-h-screen flex flex-col">
 
     <!-- HEADER WITH LOGO -->
-    <header class="bg-slate-900 text-white border-b-4 border-amber-600 custom-shadow sticky top-0 z-40">
+    <header class="text-white border-b-4 border-amber-600 custom-shadow sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-            
+
             <div class="flex items-center gap-4">
                 <div class="bg-white p-1.5 rounded-lg shadow-inner border border-amber-500/30 flex items-center justify-center">
-                    <img src="logo.jpg" alt="Logo" class="h-12 w-auto object-contain rounded" onerror="this.src='https://via.placeholder.com/50?text=Logo'">
+                    <img src="logo.jpg" alt="Logo" class="h-12 w-auto object-contain rounded">
                 </div>
                 <div>
                     <h1 class="text-base sm:text-lg font-bold tracking-wide text-slate-100">سیستەمی ناوەندی بەراوردکاری و کۆنتڕۆڵی نرخەکان</h1>
@@ -66,13 +149,16 @@
     <!-- MAIN CONTENT CONTAINER -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col justify-center">
 
-        <!-- 1. SELLER AUTHENTICATION CARD -->
+        <!-- ================================================= -->
+        <!-- 1. SELLER AUTHENTICATION CARD (LOGIN & SIGN UP)   -->
+        <!-- ================================================= -->
         <section id="sellerAuthSection" class="max-w-4xl mx-auto w-full">
-            <div class="bg-white rounded-3xl custom-shadow overflow-hidden border border-slate-200 grid grid-cols-1 md:grid-cols-2">
-                <div class="bg-slate-900 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
+            <div class="rounded-3xl custom-shadow overflow-hidden border border-slate-200 grid grid-cols-1 md:grid-cols-2 glass-effect">
+
+                <div class="bg-slate-900/80 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden backdrop-blur-sm">
                     <div class="absolute inset-0 bg-blue-900/20 z-0"></div>
                     <div class="relative z-10">
-                        <img src="logo.jpg" class="h-16 w-auto rounded-lg mb-6 border border-amber-500/40 p-1 bg-white" alt="Logo Banner" onerror="this.src='https://via.placeholder.com/60?text=Logo'">
+                        <img src="logo1.jpg" class="h-16 w-auto rounded-lg mb-6 border border-amber-500/40 p-1 bg-white/90" alt="Logo Banner">
                         <h2 class="text-2xl font-black text-slate-100 mb-2">بەخێربێن بۆ پۆڕتاڵی فرۆشیاران</h2>
                         <p class="text-xs text-slate-300 leading-relaxed mt-2">
                             تکایە پێش داخڵکردنی نرخ و کاڵاکانت، بچۆ ژوورەوە یان هەژمارێکی نوێ بۆ دوکان و کۆمپانیاکەت دروست بکە.
@@ -83,30 +169,26 @@
                     </div>
                 </div>
 
-                <div class="p-8 md:p-10 flex flex-col justify-center">
+                <div class="p-8 md:p-10 flex flex-col justify-center bg-white/90 backdrop-blur-sm">
                     <!-- LOGIN FORM -->
                     <div id="sellerLoginForm">
                         <h3 class="text-xl font-bold text-slate-900 mb-1">چوونەژوورەوەی فرۆشیار</h3>
                         <p class="text-xs text-slate-500 mb-6">زانیارییەکانت بنووسە بۆ چوونەژوورەوە</p>
-
                         <form onsubmit="handleSellerLogin(event)" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">ژمارەی مۆبایل</label>
-                                <input type="text" id="sellerLoginPhone" required placeholder="0750XXXXXXX" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 transition">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">ژمارەی مۆبایل / ناو</label>
+                                <input type="text" id="sellerLoginPhone" required placeholder="0750XXXXXXX" class="w-full px-3.5 py-2.5 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 transition">
                             </div>
-
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">وشەی تێپەڕ (Password)</label>
-                                <input type="password" id="sellerLoginPass" required placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 transition">
+                                <input type="password" id="sellerLoginPass" required placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 transition">
                             </div>
-
-                            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3 rounded-xl text-sm transition shadow-md mt-2">
-                                چوونەژوورەوە
+                            <button type="submit" id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3 rounded-xl text-sm transition shadow-md mt-2 flex items-center justify-center gap-2">
+                                <span>چوونەژوورەوە</span>
                             </button>
                         </form>
-
                         <p class="text-xs text-slate-600 text-center mt-6">
-                            هەژمارت نییە؟ 
+                            هەژمارت نییە؟
                             <button onclick="toggleAuthForm('signup')" class="text-blue-900 font-bold hover:underline">تۆمارکردنی هەژماری نوێ (Sign up)</button>
                         </p>
                     </div>
@@ -115,21 +197,18 @@
                     <div id="sellerSignUpForm" class="hidden">
                         <h3 class="text-xl font-bold text-slate-900 mb-1">تۆمارکردنی هەژماری نوێ</h3>
                         <p class="text-xs text-slate-500 mb-6">زانیاری فرۆشگاکەت پڕبکەرەوە بۆ دروستکردنی هەژمار</p>
-
                         <form onsubmit="handleSellerSignUp(event)" class="space-y-3">
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">ناوی دوکان / کۆمپانیا <span class="text-red-500">*</span></label>
-                                <input type="text" id="signUpStoreName" required placeholder="کۆمپانیای..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
+                                <input type="text" id="signUpStoreName" required placeholder="کۆمپانیای..." class="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
                             </div>
-
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">ژمارەی پەیوەندی / مۆبایل <span class="text-red-500">*</span></label>
-                                <input type="tel" id="signUpPhone" required placeholder="0750XXXXXXX" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 text-left" dir="ltr">
+                                <input type="tel" id="signUpPhone" required placeholder="0750XXXXXXX" class="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900 text-left" dir="ltr">
                             </div>
-
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">شار / شوێنی فرۆشگا</label>
-                                <select id="signUpLocation" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
+                                <select id="signUpLocation" class="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
                                     <option value="هەولێر">هەولێر</option>
                                     <option value="سلێمانی">سلێمانی</option>
                                     <option value="دهۆک">دهۆک</option>
@@ -137,19 +216,16 @@
                                     <option value="هەڵەبجە">هەڵەبجە</option>
                                 </select>
                             </div>
-
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">وشەی تێپەڕ نوێ <span class="text-red-500">*</span></label>
-                                <input type="password" id="signUpPass" required placeholder="••••••••" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
+                                <input type="password" id="signUpPass" required placeholder="••••••••" class="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-blue-900">
                             </div>
-
-                            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md mt-2">
-                                دروستکردنی هەژمار و چوونەژوورەوە
+                            <button type="submit" id="signUpBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md mt-2 flex items-center justify-center gap-2">
+                                <span>دروستکردنی هەژمار و چوونەژوورەوە</span>
                             </button>
                         </form>
-
                         <p class="text-xs text-slate-600 text-center mt-4">
-                            پێشتر هەژمارت دروستکردووە؟ 
+                            پێشتر هەژمارت دروستکردووە؟
                             <button onclick="toggleAuthForm('login')" class="text-blue-900 font-bold hover:underline">چوونەژوورەوە (Login)</button>
                         </p>
                     </div>
@@ -157,9 +233,11 @@
             </div>
         </section>
 
-        <!-- 2. SELLER ITEM REGISTRATION FORM -->
+        <!-- ================================================= -->
+        <!-- 2. SELLER ITEM REGISTRATION FORM (AFTER LOGIN)    -->
+        <!-- ================================================= -->
         <section id="sellerPortalView" class="space-y-6 hidden">
-            <div class="bg-blue-900/10 border-r-4 border-blue-900 p-4 rounded-xl flex items-center justify-between">
+            <div class="bg-blue-900/10 border-r-4 border-blue-900 p-4 rounded-xl flex items-center justify-between glass-effect">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-circle-info text-blue-900 text-xl"></i>
                     <p class="text-sm font-medium text-slate-700">
@@ -169,20 +247,19 @@
             </div>
 
             <form id="sellerRegistrationForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
-                <div class="bg-white rounded-2xl p-6 custom-shadow border border-slate-200">
+                <div class="rounded-2xl p-6 custom-shadow border border-slate-200 glass-effect">
                     <div class="flex items-center justify-between mb-5 border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 rounded-full bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-sm">١</span>
-                            <h2 class="text-lg font-bold text-slate-900">داخڵکردنی کاڵاکان</h2>
+                            <h2 class="text-lg font-bold text-slate-900">داخڵکردنی کاڵاکان (دەتوانیت چەندین کاڵا لەسەر یەک بنووسیت)</h2>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">ناوی کاڵا <span class="text-red-500">*</span></label>
                             <input type="text" id="tempItemName" placeholder="نموونە: ئایفۆن ١٥ پرۆ" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-900">
                         </div>
-
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">کاتەگۆری کاڵا <span class="text-red-500">*</span></label>
                             <select id="tempItemCategory" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-900">
@@ -194,17 +271,14 @@
                                 <option value="جۆراوجۆر">جۆراوجۆر</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">نرخی کاڵا ($ / دۆلار) <span class="text-red-500">*</span></label>
                             <input type="number" step="0.01" id="tempItemPrice" placeholder="0.00" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-900">
                         </div>
-
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">وێنەی کاڵا / فایل</label>
                             <input type="file" id="tempItemImage" accept="image/*" class="w-full text-xs text-slate-500 file:mr-0 file:ml-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-800">
                         </div>
-
                         <div class="sm:col-span-2 lg:col-span-4 flex justify-end">
                             <button type="button" onclick="addTempItem()" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs px-5 py-2.5 rounded-lg flex items-center gap-2 shadow transition">
                                 <i class="fa-solid fa-plus"></i>
@@ -213,7 +287,7 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white/80">
                         <table class="w-full text-right text-sm">
                             <thead class="bg-slate-900 text-slate-200 text-xs">
                                 <tr>
@@ -232,10 +306,22 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Min/Max Price Stats for Temp Items -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-emerald-50/90 border border-emerald-200 rounded-xl p-4 flex justify-between items-center">
+                            <span class="text-sm font-bold text-emerald-800"><i class="fa-solid fa-arrow-down ml-1"></i> کەمترین نرخ (ناو لیستەکە)</span>
+                            <span id="tempMinPrice" class="text-xl font-black text-emerald-900">$0.00</span>
+                        </div>
+                        <div class="bg-amber-50/90 border border-amber-200 rounded-xl p-4 flex justify-between items-center">
+                            <span class="text-sm font-bold text-amber-800"><i class="fa-solid fa-arrow-up ml-1"></i> بەرزترین نرخ (ناو لیستەکە)</span>
+                            <span id="tempMaxPrice" class="text-xl font-black text-amber-900">$0.00</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-amber-400 border border-amber-500/40 font-bold px-8 py-3 rounded-xl shadow-lg transition flex items-center gap-3">
+                    <button type="submit" id="submitItemsBtn" class="bg-slate-900 hover:bg-slate-800 text-amber-400 border border-amber-500/40 font-bold px-8 py-3 rounded-xl shadow-lg transition flex items-center gap-3">
                         <i class="fa-solid fa-paper-plane text-amber-400"></i>
                         <span>تۆمارکردنی کۆتایی هەموو زانیارییەکان</span>
                     </button>
@@ -243,131 +329,116 @@
             </form>
         </section>
 
-        <!-- 3. ADMIN DASHBOARD -->
+        <!-- ================================================= -->
+        <!-- 3. ADMIN DASHBOARD (RESTRICTED FOR ADMIN)        -->
+        <!-- ================================================= -->
         <section id="adminDashboardView" class="space-y-6 hidden">
-            
-            <!-- ADMIN TABS NAVIGATION -->
-            <div class="flex items-center gap-2 border-b border-slate-300 pb-2">
-                <button id="adminTabProductsBtn" onclick="switchAdminTab('products')" class="px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>داشبۆرد و بەراوردکاری نرخ</span>
-                </button>
-                <button id="adminTabSellersBtn" onclick="switchAdminTab('sellers')" class="px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200">
-                    <i class="fa-solid fa-store-slash text-red-600"></i>
-                    <span>لیستی فرۆشگاکان و بلۆککردن (Block Sellers)</span>
-                </button>
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-5 rounded-2xl custom-shadow border border-slate-200 glass-effect">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-amber-600"></i>
+                        <span>داشبۆردی بەڕێوەبەرایەتی بەراوردکاری نرخەکان</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">شیکاری بەراوردکاری بۆ کەمتری و زۆرترین نرخ</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <input type="text" id="adminSearchInput" oninput="renderAdminDashboard()" placeholder="گەڕان بۆ ناوی کاڵا یان فرۆشگا..." class="px-4 py-2 bg-slate-50/80 border border-slate-300 rounded-lg text-xs w-full sm:w-60">
+                    <select id="adminCategoryFilter" onchange="renderAdminDashboard()" class="px-3 py-2 bg-slate-50/80 border border-slate-300 rounded-lg text-xs font-semibold">
+                        <option value="هەمووی">هەموو کاتەگۆرییەکان</option>
+                        <option value="ئەلیکترۆنیات">ئەلیکترۆنیات</option>
+                        <option value="کەلوپەلی ناوماڵ">کەلوپەلی ناوماڵ</option>
+                        <option value="پۆشاک و کەلوپەل">پۆشاک و کەلوپەل</option>
+                        <option value="خۆراک و میوە">خۆراک و میوە</option>
+                        <option value="کەرەستەی بیناسازی">کەرەستەی بیناسازی</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- TAB 1: PRODUCTS & PRICES VIEW -->
-            <div id="adminProductsSection" class="space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-5 rounded-2xl custom-shadow border border-slate-200">
+            <!-- Stats Cards - ALL CLICKABLE -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div onclick="showStoresList()" class="bg-white/90 p-5 rounded-2xl border border-slate-200 custom-shadow flex items-center justify-between stat-card backdrop-blur-sm">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-amber-600"></i>
-                            <span>داشبۆردی بەڕێوەبەری بەراوردکاری نرخەکان</span>
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-1">شیکاری بەراوردکاری بۆ کەمتری و زۆرترین نرخ</p>
+                        <span class="text-xs font-bold text-slate-500 block mb-1">کۆی فرۆشگاکان</span>
+                        <span id="statTotalStores" class="text-2xl font-black text-slate-900">0</span>
                     </div>
-
-                    <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                        <input type="text" id="adminSearchInput" oninput="renderAdminDashboard()" placeholder="گەڕان بۆ ناوی کاڵا یان فرۆشگا..." class="px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs w-full sm:w-60">
-
-                        <select id="adminCategoryFilter" onchange="renderAdminDashboard()" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold">
-                            <option value="هەمووی">هەموو کاتەگۆرییەکان</option>
-                            <option value="ئەلیکترۆنیات">ئەلیکترۆنیات</option>
-                            <option value="کەلوپەلی ناوماڵ">کەلوپەلی ناوماڵ</option>
-                            <option value="پۆشاک و کەلوپەل">پۆشاک و کەلوپەل</option>
-                            <option value="خۆراک و میوە">خۆراک و میوە</option>
-                            <option value="کەرەستەی بیناسازی">کەرەستەی بیناسازی</option>
-                            <option value="جۆراوجۆر">جۆراوجۆر</option>
-                        </select>
-                    </div>
+                    <i class="fa-solid fa-building-store text-2xl text-slate-400"></i>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">کۆی فرۆشگاکان</span>
-                            <span id="statTotalStores" class="text-2xl font-black text-slate-900">0</span>
-                        </div>
-                        <i class="fa-solid fa-building-store text-2xl text-slate-400"></i>
+                <div onclick="showAllItems()" class="bg-white/90 p-5 rounded-2xl border border-slate-200 custom-shadow flex items-center justify-between stat-card backdrop-blur-sm">
+                    <div>
+                        <span class="text-xs font-bold text-slate-500 block mb-1">کۆی کاڵاکان</span>
+                        <span id="statTotalItems" class="text-2xl font-black text-slate-900">0</span>
                     </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">کۆی کاڵا چالاکەکان</span>
-                            <span id="statTotalItems" class="text-2xl font-black text-slate-900">0</span>
-                        </div>
-                        <i class="fa-solid fa-boxes-stacked text-2xl text-blue-600"></i>
-                    </div>
-
-                    <div class="bg-emerald-900 text-white p-5 rounded-2xl border border-emerald-800 custom-shadow">
-                        <span class="text-xs font-bold text-emerald-200 block mb-1">کەمتری نرخ (ئەرزانترین)</span>
-                        <span id="statMinPrice" class="text-2xl font-black text-emerald-300">$0</span>
-                        <p id="statMinDetails" class="text-xs text-emerald-100/80 mt-1 truncate">فرۆشگا: --</p>
-                    </div>
-
-                    <div class="bg-amber-900 text-white p-5 rounded-2xl border border-amber-800 custom-shadow">
-                        <span class="text-xs font-bold text-amber-200 block mb-1">زۆرترین نرخ (گرانترین)</span>
-                        <span id="statMaxPrice" class="text-2xl font-black text-amber-300">$0</span>
-                        <p id="statMaxDetails" class="text-xs text-amber-100/80 mt-1 truncate">فرۆشگا: --</p>
-                    </div>
+                    <i class="fa-solid fa-boxes-stacked text-2xl text-blue-600"></i>
                 </div>
 
-                <div class="bg-white rounded-2xl border border-slate-200 custom-shadow overflow-hidden">
-                    <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
-                        <h3 class="text-sm font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-amber-400"></i>
-                            <span>لیستی گشتی بەراوردکاری کاڵاکان</span>
-                        </h3>
-                        <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="tableCountBadge">0 کاڵا</span>
-                    </div>
+                <div onclick="showMinPriceStore()" class="bg-emerald-900/90 p-5 rounded-2xl border border-emerald-800 custom-shadow stat-card backdrop-blur-sm">
+                    <span class="text-xs font-bold text-emerald-200 block mb-1">کەمتری نرخ (ئەرزانترین)</span>
+                    <span id="statMinPrice" class="text-2xl font-black text-emerald-300">$0</span>
+                    <p id="statMinDetails" class="text-xs text-emerald-100/80 mt-1 truncate">فرۆشگا: --</p>
+                </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right text-sm">
-                            <thead class="bg-slate-100 text-slate-700 text-xs border-b border-slate-200">
-                                <tr>
-                                    <th class="p-3.5">وێنە</th>
-                                    <th class="p-3.5">ناوی کاڵا</th>
-                                    <th class="p-3.5">کاتەگۆری</th>
-                                    <th class="p-3.5">ناوی فرۆشگا / کۆمپانیا</th>
-                                    <th class="p-3.5">شوێن</th>
-                                    <th class="p-3.5">ژمارەی پەیوەندی</th>
-                                    <th class="p-3.5">نرخ ($)</th>
-                                    <th class="p-3.5 text-center">کردار</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminDataTable" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
+                <div onclick="showMaxPriceStore()" class="bg-amber-900/90 p-5 rounded-2xl border border-amber-800 custom-shadow stat-card backdrop-blur-sm">
+                    <span class="text-xs font-bold text-amber-200 block mb-1">زۆرترین نرخ (گرانترین)</span>
+                    <span id="statMaxPrice" class="text-2xl font-black text-amber-300">$0</span>
+                    <p id="statMaxDetails" class="text-xs text-amber-100/80 mt-1 truncate">فرۆشگا: --</p>
                 </div>
             </div>
 
-            <!-- TAB 2: SELLER BLOCKING MANAGEMENT SECTION -->
-            <div id="adminSellersSection" class="space-y-6 hidden">
-                <div class="bg-white rounded-2xl border border-slate-200 custom-shadow overflow-hidden">
-                    <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
-                        <h3 class="text-sm font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-users-slash text-red-400"></i>
-                            <span>لیستی فرۆشگا تۆمارکراوەکان و ڕێگەپێدان (Block / Unblock)</span>
-                        </h3>
-                        <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="sellerCountBadge">0 فرۆشگا</span>
-                    </div>
+            <!-- All Items Table -->
+            <div id="allItemsTable" class="rounded-2xl border border-slate-200 custom-shadow overflow-hidden scroll-mt-20 glass-effect">
+                <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+                    <h3 class="text-sm font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-amber-400"></i>
+                        <span>لیستی گشتی بەراوردکاری کاڵا و فرۆشگاکان</span>
+                    </h3>
+                    <span class="text-xs bg-slate-800 px-3 py-1 rounded-full text-slate-300" id="tableCountBadge">0 کاڵا</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-sm">
+                        <thead class="bg-slate-100/90 text-slate-700 text-xs border-b border-slate-200">
+                            <tr>
+                                <th class="p-3.5">وێنە</th>
+                                <th class="p-3.5">ناوی کاڵا</th>
+                                <th class="p-3.5">کاتەگۆری</th>
+                                <th class="p-3.5">ناوی فرۆشگا</th>
+                                <th class="p-3.5">شوێن</th>
+                                <th class="p-3.5">ژمارەی پەیوەندی</th>
+                                <th class="p-3.5">نرخ ($)</th>
+                                <th class="p-3.5 text-center">کردار</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminDataTable" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right text-sm">
-                            <thead class="bg-slate-100 text-slate-700 text-xs border-b border-slate-200">
-                                <tr>
-                                    <th class="p-3.5">ناوی دوکان / کۆمپانیا</th>
-                                    <th class="p-3.5">ژمارەی مۆبایل</th>
-                                    <th class="p-3.5">شار / شوێن</th>
-                                    <th class="p-3.5">دۆخی هەژمار</th>
-                                    <th class="p-3.5 text-center">کرداری بلۆککردن</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminSellersTable" class="divide-y divide-slate-100"></tbody>
-                        </table>
-                    </div>
+            <!-- Product Comparison Table -->
+            <div class="rounded-2xl border border-slate-200 custom-shadow overflow-hidden mt-8 glass-effect">
+                <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
+                    <h3 class="text-sm font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-scale-balanced text-amber-400"></i>
+                        <span>شیکاری بەراوردکاری نرخەکان بۆ هەر کاڵایەک (کەمترین و بەرزترین نرخ لە نێوان فرۆشگاکاندا)</span>
+                    </h3>
+                    <span class="text-xs bg-slate-700 px-3 py-1 rounded-full text-slate-300" id="comparisonCountBadge">0 کاڵا</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-sm">
+                        <thead class="bg-amber-50/90 text-slate-700 text-xs border-b border-slate-200">
+                            <tr>
+                                <th class="p-3.5">ناوی کاڵا</th>
+                                <th class="p-3.5">کاتەگۆری</th>
+                                <th class="p-3.5">ژمارەی فرۆشگاکان</th>
+                                <th class="p-3.5">کەمترین نرخ</th>
+                                <th class="p-3.5">فرۆشگای کەمترین نرخ</th>
+                                <th class="p-3.5">بەرزترین نرخ</th>
+                                <th class="p-3.5">فرۆشگای بەرزترین نرخ</th>
+                                <th class="p-3.5 text-center">وردەکاری</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -376,7 +447,7 @@
     </main>
 
     <!-- ADMIN LOGIN MODAL -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="adminModal" class="fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
             <button onclick="closeAdminModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -390,12 +461,34 @@
         </div>
     </div>
 
+    <!-- DETAIL MODAL FOR A SPECIFIC PRODUCT -->
+    <div id="detailModal" class="fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[80vh] overflow-y-auto">
+            <button onclick="closeDetailModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 id="detailModalTitle" class="text-lg font-bold text-slate-900 mb-4 text-center">وردەکاری نرخەکان</h3>
+            <div id="detailModalContent" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- STORES LIST MODAL (with highlight support) -->
+    <div id="storesModal" class="fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl relative max-h-[80vh] overflow-y-auto">
+            <button onclick="closeStoresModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 id="storesModalTitle" class="text-lg font-bold text-slate-900 mb-4 text-center">لیستی هەموو فرۆشگاکان</h3>
+            <div id="storesModalContent" class="space-y-2"></div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-4 mt-auto">
+    <footer class="bg-slate-900/90 text-slate-400 border-t border-slate-800 py-4 mt-auto backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-xs gap-2">
             <div class="flex items-center gap-2">
-                <img src="logo.jpg" class="h-6 w-auto rounded opacity-80" alt="Footer Logo" onerror="this.src='https://via.placeholder.com/30?text=L'">
-                <span>سیستەمی ناوەندی بەراوردکاری نرخ - بەڕێوەبەرایەتی سەرەکی</span>
+                <img src="logo.jpg" class="h-6 w-auto rounded opacity-80" alt="Footer Logo">
+                <span>سیستەمی ناوەندی بەراوردکاری نرخ - ڕێنمایی و بەڕێوەبەرایەتی گشتی</span>
             </div>
             <p>© 2026</p>
         </div>
@@ -403,56 +496,72 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // ====== GOOGLE SHEETS BACKEND CONFIG ======
-        // دوای دامەزراندنی Google Apps Script وەک Web App (Deploy > New deployment > Web app)
-        // لینکی "Web app URL"ـەکە کۆپی بکە و لێرە دایبنێ لەنێوان کۆتەیەکاندا:
-        const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzZRddrA0XEg2Oa-rYABFvsmbQF9iDgGGKrxlPCEPVu0saO4iHp6erqm_hlH4kjjSy85g/exec';
+        // =============================================
+        // Google Sheets API - Web App URL
+        // =============================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzZRddrA0XEg2Oa-rYABFvsmbQF9iDgGGKrxlPCEPVu0saO4iHp6erqm_hlH4kjjSy85g/exec';
 
-        // Data Store Logic (all shared data now lives in Google Sheets; only the
-        // "who is logged in on THIS device" session stays in localStorage)
-        let registeredSellers = [];
-        let currentSellerSession = JSON.parse(localStorage.getItem('current_seller_session')) || null;
+        // =============================================
+        // STATE
+        // =============================================
+        let currentSellerSession = null;
         let isAdminLoggedIn = false;
-
         let tempSellerItems = [];
-        let masterProducts = [];
-        let dataLoaded = false;
 
-        // ---- API HELPERS ----
-        // GET requests are used for reading (no CORS preflight issues).
-        async function apiGetAll() {
-            const res = await fetch(WEBAPP_URL, { method: 'GET' });
-            const data = await res.json();
-            if (!data.ok) throw new Error(data.error || 'server_error');
-            registeredSellers = (data.sellers || []).map(s => ({
-                ...s,
-                isBlocked: s.isBlocked === true || s.isBlocked === 'TRUE' || s.isBlocked === 'true'
-            }));
-            masterProducts = data.products || [];
-            dataLoaded = true;
+        // =============================================
+        // API HELPER
+        // =============================================
+        async function callApi(action, data = {}) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        ...data
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
         }
 
-        // POST requests are sent with a text/plain content-type on purpose:
-        // this keeps the request a "simple request" so the browser does not
-        // send a CORS pre-flight (OPTIONS) request, which Apps Script Web Apps
-        // do not handle by default.
-        async function apiPost(action, payload) {
-            const res = await fetch(WEBAPP_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action, payload })
-            });
-            const data = await res.json();
-            if (!data.ok) throw new Error(data.error || 'server_error');
-            return data;
+        // =============================================
+        // UI HELPERS
+        // =============================================
+        function setLoading(btnId, loading = true) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            if (loading) {
+                btn.classList.add('btn-loading');
+                btn.innerHTML = `<span class="loading-spinner"></span> <span>چاوەڕوان بە...</span>`;
+            } else {
+                btn.classList.remove('btn-loading');
+                // Reset button text based on original
+                if (btnId === 'loginBtn') btn.innerHTML = `<span>چوونەژوورەوە</span>`;
+                else if (btnId === 'signUpBtn') btn.innerHTML = `<span>دروستکردنی هەژمار و چوونەژوورەوە</span>`;
+                else if (btnId === 'submitItemsBtn') btn.innerHTML = `<i class="fa-solid fa-paper-plane text-amber-400"></i> <span>تۆمارکردنی کۆتایی هەموو زانیارییەکان</span>`;
+            }
         }
 
-        function showLoadError(err) {
-            console.error(err);
-            alert('کێشەیەک ڕوویدا لە پەیوەندیکردن لەگەڵ Google Sheets. تکایە دڵنیابەرەوە کە WEBAPP_URL بە دروستی دانراوە و بەرنامەکە بە "Anyone" دەستپێگەیشتنی هەیە.');
+        function showAlert(message, isError = true) {
+            alert(message);
         }
 
-        // Auth Form Switcher (Login vs Sign Up)
+        // =============================================
+        // AUTH FORM SWITCHER
+        // =============================================
         function toggleAuthForm(mode) {
             const loginForm = document.getElementById('sellerLoginForm');
             const signUpForm = document.getElementById('sellerSignUpForm');
@@ -465,7 +574,9 @@
             }
         }
 
-        // Seller Sign Up
+        // =============================================
+        // SELLER SIGN UP
+        // =============================================
         async function handleSellerSignUp(e) {
             e.preventDefault();
             const storeName = document.getElementById('signUpStoreName').value.trim();
@@ -473,78 +584,101 @@
             const location = document.getElementById('signUpLocation').value;
             const pass = document.getElementById('signUpPass').value.trim();
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
+            if (!storeName || !phone || !pass) {
+                showAlert('تکایە هەموو خانە پێویستەکان پڕبکەرەوە.');
+                return;
+            }
+
+            setLoading('signUpBtn', true);
 
             try {
-                await apiGetAll(); // refresh so we check against the latest phone list
-                const existing = registeredSellers.find(s => String(s.phone) === phone);
-                if (existing) {
-                    alert('ئەم ژمارەی مۆبایلە پێشتر تۆمارکراوە!');
-                    return;
+                const newSeller = { storeName, phone, location, pass };
+                const result = await callApi('registerSeller', { seller: newSeller });
+
+                if (result.success) {
+                    currentSellerSession = newSeller;
+                    sessionStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
+                    updateAppUI();
+                    showAlert('هەژمارەکەت بە سەرکەوتوویی دروستکرا!', false);
+                } else {
+                    showAlert('هەڵە لە تۆمارکردنی فرۆشیار: ' + (result.error || 'نەزانراو'));
                 }
-
-                const newSeller = { storeName, phone, location, pass, isBlocked: false };
-                await apiPost('addSeller', newSeller);
-
-                currentSellerSession = newSeller;
-                localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
-
-                await apiGetAll();
-                updateAppUI();
-            } catch (err) {
-                showLoadError(err);
+            } catch (error) {
+                showAlert('پەیوەندی بە ڕاژەکارەوە سەرنەکەوت. تکایە دواتر هەوڵبدەرەوە.');
+                console.error(error);
             } finally {
-                submitBtn.disabled = false;
+                setLoading('signUpBtn', false);
             }
         }
 
-        // Seller Login
+        // =============================================
+        // SELLER LOGIN
+        // =============================================
         async function handleSellerLogin(e) {
             e.preventDefault();
             const phone = document.getElementById('sellerLoginPhone').value.trim();
             const pass = document.getElementById('sellerLoginPass').value.trim();
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
+            if (!phone || !pass) {
+                showAlert('تکایە ژمارەی مۆبایل و وشەی تێپەڕ بنووسە.');
+                return;
+            }
+
+            setLoading('loginBtn', true);
 
             try {
-                await apiGetAll(); // always check against the latest data from the sheet
-                const foundSeller = registeredSellers.find(s => String(s.phone) === phone && String(s.pass) === pass);
+                const result = await callApi('getSellers');
 
-                if (foundSeller) {
-                    if (foundSeller.isBlocked) {
-                        alert('⛔ دەستگەیشتنت ڕاگیراوە! هەژمارەکەت لەلایەن بەڕێوەبەرەوە بلۆک کراوە.');
-                        return;
+                if (result.success) {
+                    const foundSeller = result.sellers.find(s => s.phone === phone && s.pass === pass);
+                    if (foundSeller) {
+                        currentSellerSession = foundSeller;
+                        sessionStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
+                        updateAppUI();
+                        showAlert('بەخێربێیت!', false);
+                    } else {
+                        showAlert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە! ئەگەر هەژمارت نییە Sign Up بکە.');
                     }
-                    currentSellerSession = foundSeller;
-                    localStorage.setItem('current_seller_session', JSON.stringify(currentSellerSession));
-                    updateAppUI();
                 } else {
-                    alert('ژمارەی مۆبایل یان وشەی تێپەڕ هەڵەیە!');
+                    showAlert('هەڵە لە وەرگرتنی داتای فرۆشیاران');
                 }
-            } catch (err) {
-                showLoadError(err);
+            } catch (error) {
+                showAlert('پەیوەندی بە ڕاژەکارەوە سەرنەکەوت. تکایە دواتر هەوڵبدەرەوە.');
+                console.error(error);
             } finally {
-                submitBtn.disabled = false;
+                setLoading('loginBtn', false);
             }
         }
 
-        // Logout
+        // =============================================
+        // LOGOUT
+        // =============================================
         function handleLogout() {
             currentSellerSession = null;
             isAdminLoggedIn = false;
-            localStorage.removeItem('current_seller_session');
+            sessionStorage.removeItem('current_seller_session');
             updateAppUI();
         }
 
-        // UI State Controller
+        // =============================================
+        // UI STATE CONTROLLER
+        // =============================================
         function updateAppUI() {
             const authSection = document.getElementById('sellerAuthSection');
             const sellerPortal = document.getElementById('sellerPortalView');
             const adminDashboard = document.getElementById('adminDashboardView');
             const userBadge = document.getElementById('sellerUserBadge');
             const logoutBtn = document.getElementById('logoutBtn');
+
+            // Check session storage for seller session
+            const sessionData = sessionStorage.getItem('current_seller_session');
+            if (sessionData) {
+                try {
+                    currentSellerSession = JSON.parse(sessionData);
+                } catch (e) {
+                    currentSellerSession = null;
+                }
+            }
 
             if (isAdminLoggedIn) {
                 authSection.classList.add('hidden');
@@ -553,16 +687,15 @@
                 logoutBtn.classList.remove('hidden');
                 userBadge.classList.add('hidden');
                 renderAdminDashboard();
-                renderAdminSellers();
             } else if (currentSellerSession) {
                 authSection.classList.add('hidden');
                 sellerPortal.classList.remove('hidden');
                 adminDashboard.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
                 userBadge.classList.remove('hidden');
-                
-                document.getElementById('currentSellerNameText').innerText = currentSellerSession.storeName || 'فرۆشیار';
-                document.getElementById('activeStoreNameTitle').innerText = currentSellerSession.storeName || 'فرۆشیار';
+
+                document.getElementById('currentSellerNameText').innerText = currentSellerSession.storeName;
+                document.getElementById('activeStoreNameTitle').innerText = currentSellerSession.storeName;
             } else {
                 authSection.classList.remove('hidden');
                 sellerPortal.classList.add('hidden');
@@ -572,30 +705,30 @@
             }
         }
 
-        // Admin Modal Controls
+        // =============================================
+        // ADMIN MODAL
+        // =============================================
         function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
         function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
 
-        async function handleAdminLogin(e) {
+        function handleAdminLogin(e) {
             e.preventDefault();
             const u = document.getElementById('adminUser').value.trim();
             const p = document.getElementById('adminPass').value.trim();
 
             if (u === 'admin' && p === 'admin123') {
-                try {
-                    await apiGetAll();
-                    isAdminLoggedIn = true;
-                    closeAdminModal();
-                    updateAppUI();
-                } catch (err) {
-                    showLoadError(err);
-                }
+                isAdminLoggedIn = true;
+                closeAdminModal();
+                updateAppUI();
+                showAlert('بەخێربێیت بەڕێوەبەر!', false);
             } else {
-                alert('ناوی بەکارهێنەر یان وشەی تێپەڕی بەڕێوەبەر هەڵەیە!');
+                showAlert('ناوی بەکارهێنەر یان وشەی تێپەڕی بەڕێوەبەر هەڵەیە!');
             }
         }
 
-        // Temporary Items Logic
+        // =============================================
+        // TEMPORARY ITEMS LOGIC (Seller)
+        // =============================================
         function addTempItem() {
             const nameInput = document.getElementById('tempItemName');
             const categoryInput = document.getElementById('tempItemCategory');
@@ -603,271 +736,483 @@
             const imageInput = document.getElementById('tempItemImage');
 
             if (!nameInput.value.trim() || !priceInput.value) {
-                alert('تکایە ناوی کاڵا و نرخی کاڵاکە بنووسە.');
+                showAlert('تکایە ناوی کاڵا و نرخی کاڵاکە بنووسە.');
                 return;
             }
 
-            const name = nameInput.value.trim();
-            const category = categoryInput.value;
-            const price = parseFloat(priceInput.value);
-            const file = imageInput.files ? imageInput.files[0] : null;
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    saveTempItem(name, category, price, e.target.result);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                saveTempItem(name, category, price, 'https://via.placeholder.com/80/1e293b/f59e0b?text=No+Image');
+            let imageUrl = 'https://via.placeholder.com/80/1e3a8a/ffffff?text=Product';
+            if (imageInput.files && imageInput.files[0]) {
+                imageUrl = URL.createObjectURL(imageInput.files[0]);
             }
-        }
 
-        function saveTempItem(name, category, price, imageUrl) {
             tempSellerItems.push({
-                id: Date.now(),
-                name,
-                category,
-                price,
-                imageUrl
+                id: Date.now() + Math.random(),
+                productName: nameInput.value.trim(),
+                productCategory: categoryInput.value,
+                productPrice: parseFloat(priceInput.value),
+                imageUrl: imageUrl
             });
 
-            document.getElementById('tempItemName').value = '';
-            document.getElementById('tempItemPrice').value = '';
-            document.getElementById('tempItemImage').value = '';
-
+            nameInput.value = '';
+            priceInput.value = '';
+            imageInput.value = '';
             renderTempItemsTable();
+            updateTempPriceStats();
         }
 
         function renderTempItemsTable() {
             const tbody = document.getElementById('tempItemsTable');
             if (tempSellerItems.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="p-6 text-center text-slate-400 font-medium">هیچ کاڵایەک زیادر نەکراوە.</td>
-                    </tr>`;
+                tbody.innerHTML =
+                    `<tr><td colspan="6" class="p-6 text-center text-slate-400 font-medium">هیچ کاڵایەک زیادر نەکراوە.</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = tempSellerItems.map((item, index) => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="p-3 font-bold text-slate-500">${index + 1}</td>
-                    <td class="p-3">
-                        <img src="${item.imageUrl}" class="w-10 h-10 object-cover rounded-lg border border-slate-200" alt="Item">
-                    </td>
-                    <td class="p-3 font-semibold text-slate-800">${item.name}</td>
-                    <td class="p-3 text-slate-600">${item.category}</td>
-                    <td class="p-3 font-extrabold text-emerald-600">$${item.price.toFixed(2)}</td>
-                    <td class="p-3 text-center">
-                        <button type="button" onclick="removeTempItem(${item.id})" class="text-red-500 hover:text-red-700 p-1 transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 font-bold text-slate-500">${index + 1}</td>
+                        <td class="p-3"><img src="${item.imageUrl}" class="w-10 h-10 object-cover rounded-lg border"></td>
+                        <td class="p-3 font-semibold text-slate-800">${item.productName}</td>
+                        <td class="p-3 text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded w-max">${item.productCategory}</td>
+                        <td class="p-3 font-bold text-emerald-700">$${item.productPrice.toFixed(2)}</td>
+                        <td class="p-3 text-center">
+                            <button type="button" onclick="removeTempItem(${index})" class="text-red-600 hover:text-red-800 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
         }
 
-        function removeTempItem(id) {
-            tempSellerItems = tempSellerItems.filter(item => item.id !== id);
+        function removeTempItem(index) {
+            tempSellerItems.splice(index, 1);
             renderTempItemsTable();
+            updateTempPriceStats();
         }
 
-        // Final Form Submission
-        async function handleFormSubmit(e) {
-            e.preventDefault();
+        function updateTempPriceStats() {
+            const minSpan = document.getElementById('tempMinPrice');
+            const maxSpan = document.getElementById('tempMaxPrice');
 
             if (tempSellerItems.length === 0) {
-                alert('تکایە لانیکەم کاڵایەک زیابکە بۆ لیستەکە بەرلە ناردنی کۆتایی!');
+                minSpan.textContent = '$0.00';
+                maxSpan.textContent = '$0.00';
+                return;
+            }
+
+            const prices = tempSellerItems.map(item => item.productPrice);
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+
+            minSpan.textContent = `$${minPrice.toFixed(2)}`;
+            maxSpan.textContent = `$${maxPrice.toFixed(2)}`;
+        }
+
+        // =============================================
+        // SUBMIT ITEMS TO GOOGLE SHEETS
+        // =============================================
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            if (tempSellerItems.length === 0) {
+                showAlert('تکایە لانیکەم کاڵایەک بۆ لیستەکە زیادبکە.');
                 return;
             }
 
             if (!currentSellerSession) {
-                alert('تکایە پێشتر بچۆ ژوورەوە!');
+                showAlert('تکایە یەکەم جار بچۆ ژوورەوە.');
                 return;
             }
 
-            // Google Sheets cells have a ~50,000 character limit. Large photo
-            // uploads become huge base64 strings, so we fall back to a
-            // placeholder image if a photo is too large for a cell.
-            const MAX_CELL_CHARS = 45000;
-            const formattedItems = tempSellerItems.map(item => ({
-                ...item,
-                imageUrl: (item.imageUrl && item.imageUrl.length > MAX_CELL_CHARS)
-                    ? 'https://via.placeholder.com/80/1e293b/f59e0b?text=No+Image'
-                    : item.imageUrl,
-                sellerStore: currentSellerSession.storeName || 'دیارینەکراو',
-                sellerPhone: currentSellerSession.phone || '--',
-                sellerLocation: currentSellerSession.location || '--'
-            }));
-
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
+            setLoading('submitItemsBtn', true);
 
             try {
-                await apiPost('addProducts', { items: formattedItems });
+                // Prepare products to send
+                const productsToSend = tempSellerItems.map(item => ({
+                    id: Date.now() + Math.random(),
+                    storeName: currentSellerSession.storeName,
+                    storePhone: currentSellerSession.phone,
+                    storeLocation: currentSellerSession.location,
+                    productName: item.productName,
+                    productCategory: item.productCategory,
+                    productPrice: item.productPrice,
+                    imageUrl: item.imageUrl
+                }));
 
-                tempSellerItems = [];
-                renderTempItemsTable();
-                alert('✅ سەرکەوتووانە هەموو کاڵاکان تۆمارکران و ڕەوانەی سیستەمی بەراوردکاری کەوتن (Google Sheets)!');
-            } catch (err) {
-                showLoadError(err);
+                // Get existing products
+                const existingResult = await callApi('getProducts');
+                let allProducts = [];
+                if (existingResult.success && existingResult.products) {
+                    allProducts = existingResult.products;
+                }
+
+                // Add new products
+                allProducts = [...allProducts, ...productsToSend];
+
+                // Save all to server
+                const saveResult = await callApi('saveProducts', { products: allProducts });
+
+                if (saveResult.success) {
+                    tempSellerItems = [];
+                    document.getElementById('sellerRegistrationForm').reset();
+                    renderTempItemsTable();
+                    updateTempPriceStats();
+                    showAlert('سەرجەم کاڵاکان بە سەرکەوتوویی ڕەوانەکران بۆ Google Sheets!', false);
+                } else {
+                    showAlert('هەڵە لە ناردنی کاڵاکان: ' + (saveResult.error || 'نەزانراو'));
+                }
+            } catch (error) {
+                showAlert('پەیوەندی بە ڕاژەکارەوە سەرنەکەوت. تکایە دواتر هەوڵبدەرەوە.');
+                console.error(error);
             } finally {
-                submitBtn.disabled = false;
+                setLoading('submitItemsBtn', false);
             }
         }
 
-        // Admin Dashboard Switch
-        function switchAdminTab(tab) {
-            const productsSec = document.getElementById('adminProductsSection');
-            const sellersSec = document.getElementById('adminSellersSection');
-            const productsBtn = document.getElementById('adminTabProductsBtn');
-            const sellersBtn = document.getElementById('adminTabSellersBtn');
+        // =============================================
+        // ADMIN DASHBOARD RENDER
+        // =============================================
+        async function renderAdminDashboard() {
+            if (!isAdminLoggedIn) return;
 
-            if (tab === 'products') {
-                productsSec.classList.remove('hidden');
-                sellersSec.classList.add('hidden');
-                productsBtn.className = "px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow";
-                sellersBtn.className = "px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200";
-            } else {
-                sellersSec.classList.remove('hidden');
-                productsSec.classList.add('hidden');
-                sellersBtn.className = "px-5 py-2.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow";
-                productsBtn.className = "px-5 py-2.5 bg-white text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-2 border border-slate-200";
+            try {
+                const result = await callApi('getProducts');
+                let masterProducts = [];
+                if (result.success && result.products) {
+                    masterProducts = result.products;
+                } else {
+                    console.warn('No products found or error:', result);
+                }
+
+                const categoryFilter = document.getElementById('adminCategoryFilter').value;
+                const searchQuery = document.getElementById('adminSearchInput').value.toLowerCase().trim();
+
+                let filtered = masterProducts.filter(item => {
+                    const matchesCategory = (categoryFilter === 'هەمووی' || item.productCategory === categoryFilter);
+                    const matchesSearch = item.productName.toLowerCase().includes(searchQuery) ||
+                        (item.storeName && item.storeName.toLowerCase().includes(searchQuery));
+                    return matchesCategory && matchesSearch;
+                });
+
+                // Stats
+                const uniqueStores = new Set(masterProducts.map(p => p.storeName));
+                document.getElementById('statTotalStores').innerText = uniqueStores.size;
+                document.getElementById('statTotalItems').innerText = masterProducts.length;
+                document.getElementById('tableCountBadge').innerText = `${filtered.length} کاڵا`;
+
+                // Overall min/max
+                if (filtered.length > 0) {
+                    let minItem = filtered.reduce((min, p) => p.productPrice < min.productPrice ? p : min, filtered[0]);
+                    let maxItem = filtered.reduce((max, p) => p.productPrice > max.productPrice ? p : max, filtered[0]);
+
+                    document.getElementById('statMinPrice').innerText = `$${minItem.productPrice.toFixed(2)}`;
+                    document.getElementById('statMinDetails').innerText = `${minItem.storeName} (${minItem.productName})`;
+
+                    document.getElementById('statMaxPrice').innerText = `$${maxItem.productPrice.toFixed(2)}`;
+                    document.getElementById('statMaxDetails').innerText = `${maxItem.storeName} (${maxItem.productName})`;
+
+                    window._minStoreName = minItem.storeName;
+                    window._maxStoreName = maxItem.storeName;
+                } else {
+                    document.getElementById('statMinPrice').innerText = '$0';
+                    document.getElementById('statMinDetails').innerText = 'فرۆشگا: --';
+                    document.getElementById('statMaxPrice').innerText = '$0';
+                    document.getElementById('statMaxDetails').innerText = 'فرۆشگا: --';
+                    window._minStoreName = null;
+                    window._maxStoreName = null;
+                }
+
+                // All items table
+                const tbody = document.getElementById('adminDataTable');
+                tbody.innerHTML = filtered.map(item => `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-3"><img src="${item.imageUrl || 'https://via.placeholder.com/80/1e293b/f59e0b?text=No+Image'}" class="w-12 h-12 object-cover rounded-lg border"></td>
+                            <td class="p-3 font-bold text-slate-900">${item.productName}</td>
+                            <td class="p-3"><span class="bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-md text-xs border">${item.productCategory}</span></td>
+                            <td class="p-3 font-semibold text-blue-950">${item.storeName}</td>
+                            <td class="p-3 text-slate-600 text-xs">${item.storeLocation || ''}</td>
+                            <td class="p-3 text-slate-700 font-mono text-xs" dir="ltr">${item.storePhone || ''}</td>
+                            <td class="p-3 font-black text-blue-900 text-base">$${item.productPrice.toFixed(2)}</td>
+                            <td class="p-3 text-center">
+                                <button onclick="deleteMasterItem('${item.id}')" class="text-red-500 hover:text-red-700 text-xs bg-red-50 p-2 rounded-lg"><i class="fa-solid fa-trash-can"></i></button>
+                            </td>
+                        </tr>
+                    `).join('');
+
+                renderComparisonTable(masterProducts);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showAlert('هەڵە لە بارکردنی داتاکان. تکایە پەڕەکە نوێ بکەرەوە.');
             }
         }
 
-        function renderAdminDashboard() {
-            const searchInput = document.getElementById('adminSearchInput');
-            const categoryFilter = document.getElementById('adminCategoryFilter');
-            
-            const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
-            const catVal = categoryFilter ? categoryFilter.value : 'هەمووی';
+        // =============================================
+        // PRODUCT COMPARISON TABLE
+        // =============================================
+        function renderComparisonTable(masterProducts) {
+            const tbody = document.getElementById('comparisonTableBody');
+            if (!masterProducts || masterProducts.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="8" class="p-6 text-center text-slate-400 font-medium">هیچ کاڵایەک تۆمار نەکراوە.</td></tr>`;
+                document.getElementById('comparisonCountBadge').innerText = '0 کاڵا';
+                return;
+            }
 
-            let filtered = masterProducts.filter(item => {
-                const itemName = (item.name || '').toLowerCase();
-                const sellerStore = (item.sellerStore || '').toLowerCase();
-                const matchesSearch = itemName.includes(searchVal) || sellerStore.includes(searchVal);
-                const matchesCat = (catVal === 'هەمووی') || (item.category === catVal);
-                return matchesSearch && matchesCat;
+            const groups = {};
+            masterProducts.forEach(item => {
+                const key = item.productName.trim().toLowerCase();
+                if (!groups[key]) {
+                    groups[key] = {
+                        productName: item.productName,
+                        category: item.productCategory,
+                        items: []
+                    };
+                }
+                groups[key].items.push(item);
             });
 
-            // Statistics Update
-            const totalStores = new Set(masterProducts.map(p => p.sellerStore)).size;
-            document.getElementById('statTotalStores').innerText = totalStores;
-            document.getElementById('statTotalItems').innerText = filtered.length;
+            const groupKeys = Object.keys(groups);
+            document.getElementById('comparisonCountBadge').innerText = `${groupKeys.length} کاڵا`;
 
-            if (filtered.length > 0) {
-                const minItem = filtered.reduce((prev, curr) => (Number(prev.price) < Number(curr.price)) ? prev : curr);
-                const maxItem = filtered.reduce((prev, curr) => (Number(prev.price) > Number(curr.price)) ? prev : curr);
+            let html = '';
+            groupKeys.forEach(key => {
+                const group = groups[key];
+                const items = group.items;
+                const prices = items.map(i => i.productPrice);
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                const minItem = items.find(i => i.productPrice === minPrice);
+                const maxItem = items.find(i => i.productPrice === maxPrice);
 
-                document.getElementById('statMinPrice').innerText = `$${Number(minItem.price).toFixed(2)}`;
-                document.getElementById('statMinDetails').innerText = `${minItem.name || ''} (${minItem.sellerStore || ''})`;
+                html += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-3 font-bold text-slate-900">${group.productName}</td>
+                            <td class="p-3"><span class="bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-md text-xs border">${group.category}</span></td>
+                            <td class="p-3 text-center font-medium">${items.length}</td>
+                            <td class="p-3 font-bold text-emerald-700">$${minPrice.toFixed(2)}</td>
+                            <td class="p-3 text-sm text-slate-700">${minItem.storeName}</td>
+                            <td class="p-3 font-bold text-amber-700">$${maxPrice.toFixed(2)}</td>
+                            <td class="p-3 text-sm text-slate-700">${maxItem.storeName}</td>
+                            <td class="p-3 text-center">
+                                <button onclick="showProductDetails('${key}')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs px-3 py-1.5 rounded-lg font-semibold transition">
+                                    <i class="fa-solid fa-eye ml-1"></i> وردەکاری
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+            });
 
-                document.getElementById('statMaxPrice').innerText = `$${Number(maxItem.price).toFixed(2)}`;
-                document.getElementById('statMaxDetails').innerText = `${maxItem.name || ''} (${maxItem.sellerStore || ''})`;
-            } else {
-                document.getElementById('statMinPrice').innerText = '$0';
-                document.getElementById('statMinDetails').innerText = 'فرۆشگا: --';
-                document.getElementById('statMaxPrice').innerText = '$0';
-                document.getElementById('statMaxDetails').innerText = 'فرۆشگا: --';
-            }
-
-            document.getElementById('tableCountBadge').innerText = `${filtered.length} کاڵا`;
-
-            const tbody = document.getElementById('adminDataTable');
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">هیچ زانیارییەک نەدۆزرایەوە.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(item => `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                    <td class="p-3.5">
-                        <img src="${item.imageUrl || 'https://via.placeholder.com/40'}" class="w-10 h-10 object-cover rounded-lg border border-slate-200" alt="Product">
-                    </td>
-                    <td class="p-3.5 font-bold text-slate-900">${item.name || '--'}</td>
-                    <td class="p-3.5 text-slate-600">${item.category || '--'}</td>
-                    <td class="p-3.5 font-semibold text-blue-900">${item.sellerStore || '--'}</td>
-                    <td class="p-3.5 text-slate-600">${item.sellerLocation || '--'}</td>
-                    <td class="p-3.5 text-slate-600 font-mono" dir="ltr">${item.sellerPhone || '--'}</td>
-                    <td class="p-3.5 font-extrabold text-emerald-600 text-base">$${Number(item.price || 0).toFixed(2)}</td>
-                    <td class="p-3.5 text-center">
-                        <button onclick="deleteMasterProduct(${item.id})" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-semibold transition">
-                            سڕینەوە
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = html;
         }
 
-        async function deleteMasterProduct(id) {
-            if (!confirm('دڵنیایت لە سڕینەوەی ئەم کاڵایە؟')) return;
+        // =============================================
+        // DETAIL MODAL FOR A SPECIFIC PRODUCT
+        // =============================================
+        async function showProductDetails(productKey) {
+            const modal = document.getElementById('detailModal');
+            const title = document.getElementById('detailModalTitle');
+            const content = document.getElementById('detailModalContent');
+
             try {
-                await apiPost('deleteProduct', { id });
-                masterProducts = masterProducts.filter(p => String(p.id) !== String(id));
-                renderAdminDashboard();
-            } catch (err) {
-                showLoadError(err);
-            }
-        }
+                const result = await callApi('getProducts');
+                let masterProducts = result.success ? result.products : [];
+                const items = masterProducts.filter(i => i.productName.trim().toLowerCase() === productKey);
+                if (items.length === 0) return;
 
-        // Render Sellers Table (Admin)
-        function renderAdminSellers() {
-            document.getElementById('sellerCountBadge').innerText = `${registeredSellers.length} فرۆشگا`;
-            const tbody = document.getElementById('adminSellersTable');
+                title.textContent = `وردەکاری نرخەکان بۆ "${items[0].productName}"`;
 
-            if (registeredSellers.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">هیچ فرۆشیارێک تۆمار نەکراوە.</td></tr>`;
-                return;
-            }
+                let html = `
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                            <div class="flex justify-between text-sm font-semibold border-b border-slate-200 pb-2">
+                                <span>فرۆشگا</span>
+                                <span>نرخ ($)</span>
+                            </div>
+                    `;
 
-            tbody.innerHTML = registeredSellers.map(seller => `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                    <td class="p-3.5 font-bold text-slate-900">${seller.storeName || '--'}</td>
-                    <td class="p-3.5 text-slate-600 font-mono" dir="ltr">${seller.phone || '--'}</td>
-                    <td class="p-3.5 text-slate-600">${seller.location || '--'}</td>
-                    <td class="p-3.5">
-                        ${seller.isBlocked 
-                            ? `<span class="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-lock ml-1"></i>بلۆککراوە</span>`
-                            : `<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-check ml-1"></i>چالاک</span>`
-                        }
-                    </td>
-                    <td class="p-3.5 text-center">
-                        <button onclick="toggleBlockSeller('${seller.phone}')" class="${seller.isBlocked ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-red-600 hover:bg-red-700'} text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow">
-                            ${seller.isBlocked ? 'لابردنی بلۆک' : 'بلۆککردن'}
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
+                const sorted = [...items].sort((a, b) => a.productPrice - b.productPrice);
+                sorted.forEach((item, index) => {
+                    const isMin = index === 0;
+                    const isMax = index === sorted.length - 1;
+                    let badge = '';
+                    if (isMin && isMax) badge = '(تاکە نرخ)';
+                    else if (isMin) badge = '🟢 کەمترین';
+                    else if (isMax) badge = '🔴 بەرزترین';
 
-        async function toggleBlockSeller(phone) {
-            try {
-                await apiPost('toggleBlockSeller', { phone });
-                registeredSellers = registeredSellers.map(s => {
-                    if (String(s.phone) === String(phone)) {
-                        return { ...s, isBlocked: !s.isBlocked };
-                    }
-                    return s;
+                    html += `
+                            <div class="flex justify-between items-center ${isMin ? 'bg-emerald-50' : ''} ${isMax && !isMin ? 'bg-amber-50' : ''} p-2 rounded">
+                                <span class="font-medium">${item.storeName} ${badge}</span>
+                                <span class="font-bold ${isMin ? 'text-emerald-700' : isMax ? 'text-amber-700' : ''}">$${item.productPrice.toFixed(2)}</span>
+                            </div>
+                        `;
                 });
-                renderAdminSellers();
-            } catch (err) {
-                showLoadError(err);
+
+                html += `</div>`;
+                content.innerHTML = html;
+                modal.classList.remove('hidden');
+            } catch (error) {
+                showAlert('هەڵە لە وەرگرتنی داتاکان');
+                console.error(error);
             }
         }
 
-        // Run UI Initialization on Load
-        async function initApp() {
-            try {
-                await apiGetAll();
-            } catch (err) {
-                // If the very first load fails (e.g. WEBAPP_URL not set yet),
-                // still render the auth screen instead of a blank page.
-                console.error(err);
-            }
-            updateAppUI();
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
         }
-        initApp();
+
+        // =============================================
+        // CLICK ACTIONS FOR STAT CARDS
+        // =============================================
+
+        function showAllItems() {
+            const table = document.getElementById('allItemsTable');
+            if (table) {
+                table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                table.style.transition = 'box-shadow 0.3s ease';
+                table.style.boxShadow = '0 0 0 4px #f59e0b, 0 10px 25px -5px rgba(0,0,0,0.2)';
+                setTimeout(() => {
+                    table.style.boxShadow = '';
+                }, 2000);
+            }
+        }
+
+        async function showStoresList(highlightStoreName) {
+            const modal = document.getElementById('storesModal');
+            const content = document.getElementById('storesModalContent');
+            const title = document.getElementById('storesModalTitle');
+
+            try {
+                const result = await callApi('getProducts');
+                let masterProducts = result.success ? result.products : [];
+
+                if (masterProducts.length === 0) {
+                    content.innerHTML = `<p class="text-center text-slate-500 py-4">هیچ فرۆشگایەک تۆمار نەکراوە.</p>`;
+                    modal.classList.remove('hidden');
+                    return;
+                }
+
+                const storeMap = {};
+                masterProducts.forEach(item => {
+                    const key = item.storeName.trim();
+                    if (!storeMap[key]) {
+                        storeMap[key] = {
+                            storeName: item.storeName,
+                            phone: item.storePhone,
+                            location: item.storeLocation,
+                            items: []
+                        };
+                    }
+                    storeMap[key].items.push(item);
+                });
+
+                const storeKeys = Object.keys(storeMap);
+                let html = `
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-sm">
+                                <thead class="bg-slate-100 text-slate-700 text-xs border-b">
+                                    <tr>
+                                        <th class="p-3">#</th>
+                                        <th class="p-3">ناوی فرۆشگا</th>
+                                        <th class="p-3">شوێن</th>
+                                        <th class="p-3">ژمارەی کاڵا</th>
+                                        <th class="p-3">کەمترین نرخ</th>
+                                        <th class="p-3">بەرزترین نرخ</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                        `;
+
+                storeKeys.forEach((key, index) => {
+                    const store = storeMap[key];
+                    const items = store.items;
+                    const prices = items.map(i => i.productPrice);
+                    const minPrice = Math.min(...prices);
+                    const maxPrice = Math.max(...prices);
+
+                    let rowClass = '';
+                    if (highlightStoreName && store.storeName.trim().toLowerCase() === highlightStoreName.trim().toLowerCase()) {
+                        rowClass = 'highlight-min';
+                    }
+
+                    html += `
+                                <tr class="hover:bg-slate-50 ${rowClass}">
+                                    <td class="p-3 font-bold text-slate-500">${index + 1}</td>
+                                    <td class="p-3 font-semibold text-blue-900">${store.storeName}</td>
+                                    <td class="p-3 text-slate-600 text-xs">${store.location}</td>
+                                    <td class="p-3 text-center font-medium">${items.length}</td>
+                                    <td class="p-3 font-bold text-emerald-700">$${minPrice.toFixed(2)}</td>
+                                    <td class="p-3 font-bold text-amber-700">$${maxPrice.toFixed(2)}</td>
+                                </tr>
+                            `;
+                });
+
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                if (highlightStoreName) {
+                    title.textContent = `لیستی فرۆشگاکان - دیاریکردنی فرۆشگای "${highlightStoreName}"`;
+                } else {
+                    title.textContent = 'لیستی هەموو فرۆشگاکان';
+                }
+
+                content.innerHTML = html;
+                modal.classList.remove('hidden');
+            } catch (error) {
+                showAlert('هەڵە لە وەرگرتنی داتاکان');
+                console.error(error);
+            }
+        }
+
+        function closeStoresModal() {
+            document.getElementById('storesModal').classList.add('hidden');
+        }
+
+        document.getElementById('storesModal').addEventListener('click', function(e) {
+            if (e.target === this) closeStoresModal();
+        });
+
+        function showMinPriceStore() {
+            if (window._minStoreName) {
+                showStoresList(window._minStoreName);
+            } else {
+                showAlert('هیچ کاڵایەک نییە بۆ دیاریکردنی کەمترین نرخ.');
+            }
+        }
+
+        function showMaxPriceStore() {
+            if (window._maxStoreName) {
+                showStoresList(window._maxStoreName);
+            } else {
+                showAlert('هیچ کاڵایەک نییە بۆ دیاریکردنی زۆرترین نرخ.');
+            }
+        }
+
+        // =============================================
+        // DELETE ITEM (Admin)
+        // =============================================
+        async function deleteMasterItem(id) {
+            if (!confirm('ئایا دڵنیایت لە سڕینەوەی ئەم کاڵایە؟')) return;
+
+            try {
+                const result = await callApi('deleteProduct', { productId: id });
+                if (result.success) {
+                    renderAdminDashboard();
+                    showAlert('کاڵاکە سڕایەوە!', false);
+                } else {
+                    showAlert('هەڵە لە سڕینەوەی کاڵاکە: ' + (result.error || 'نەزانراو'));
+                }
+            } catch (error) {
+                showAlert('پەیوەندی بە ڕاژەکارەوە سەرنەکەوت.');
+                console.error(error);
+            }
+        }
+
+        // =============================================
+        // INITIALIZATION
+        // =============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAppUI();
+            updateTempPriceStats();
+        });
     </script>
 </body>
 </html>
